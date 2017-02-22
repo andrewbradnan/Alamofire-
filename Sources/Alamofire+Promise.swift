@@ -1,9 +1,5 @@
-@_exported import func Alamofire.request
-@_exported import func Alamofire.download
+import PromiseKit
 import Alamofire
-#if !COCOAPODS
-@_exported import PromiseKit
-#endif
 
 public enum PMKAFResponseOptions { case raw }
 
@@ -19,6 +15,19 @@ public enum PMKAFResponseOptions { case raw }
 
  */
 extension Alamofire.DataRequest {
+
+    public func response() -> Promise<Void> {
+        return Promise { seal in
+            response(queue: nil) { rsp in
+                if let error = rsp.error {
+                    seal.reject(error)
+                } else {
+                    seal.fulfill()
+                }
+            }
+        }
+    }
+
     /**
           firstly {
               Alamofire.request(url).responseData(with: .raw)
@@ -48,7 +57,7 @@ extension Alamofire.DataRequest {
           }
      */
     public func responseData() -> Promise<Data> {
-        return responseData(with: .raw).then(on: zalgo){ $0.0 }
+        return responseData(with: .raw).then(on: nil){ $0.0 }
     }
 
     /**
@@ -79,7 +88,7 @@ extension Alamofire.DataRequest {
           }
      */
     public func responseString(encoding: String.Encoding? = nil) -> Promise<String> {
-        return responseString(with: .raw, encoding: encoding).then(on: zalgo){ $0.0 }
+        return responseString(with: .raw, encoding: encoding).then(on: nil){ $0.0 }
     }
 
     /**
@@ -110,7 +119,7 @@ extension Alamofire.DataRequest {
           }
      */
     public func responseJSON(options: JSONSerialization.ReadingOptions = .allowFragments) -> Promise<Any> {
-        return responseJSON(with: .raw).then(on: zalgo){ $0.0 }
+        return responseJSON(with: .raw).then(on: nil){ $0.0 }
     }
 }
 
@@ -143,7 +152,7 @@ extension Alamofire.DownloadRequest {
           }
      */
     public func responseData() -> Promise<Data> {
-        return responseData(with: .raw).then(on: zalgo){ $0.0 }
+        return responseData(with: .raw).then(on: nil){ $0.0 }
     }
     
     /**

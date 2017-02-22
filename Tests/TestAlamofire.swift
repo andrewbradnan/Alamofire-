@@ -1,5 +1,7 @@
 import PMKAlamofire
 import OHHTTPStubs
+import PromiseKit
+import Alamofire
 import XCTest
 
 class AlamofireTests: XCTestCase {
