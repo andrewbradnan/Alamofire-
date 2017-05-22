@@ -16,7 +16,7 @@ public enum PMKAFResponseOptions { case raw }
  */
 extension Alamofire.DataRequest {
 
-    public func response() -> Promise<Void> {
+    public func response(_: PMKNamespacer) -> Promise<Void> {
         return Promise { seal in
             response(queue: nil) { rsp in
                 if let error = rsp.error {
@@ -159,7 +159,7 @@ extension Alamofire.DownloadRequest {
      Feeds you your destinationUrl or, if unset, the temporaryURL.
      This variant is more efficient since the `Data` of the download is not allocated into memory.
     */
-    public func response() -> Promise<URL> {
+    public func response(_: PMKNamespacer) -> Promise<URL> {
         return Promise { seal in
             response(queue: nil) { rsp in
                 let url = rsp.destinationURL ?? rsp.temporaryURL
